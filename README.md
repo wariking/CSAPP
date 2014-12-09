@@ -1,4 +1,4 @@
 CSAPP
 =====
 
-The solution to CSAPP projections
+The solution to CSAPP projects
