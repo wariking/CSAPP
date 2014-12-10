@@ -150,15 +150,15 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-  /* 
-  the ugly solution
-  int res = 0xFF;
-  n  = n<<3;
-  res = x&(res<<n); 	
-  res = res>>n;
-  return res;
-  */
   return (x>>(n<<3))&0xFF;
+
+
+
+
+
+
+  //return 2;
+
 }
 /* 
  * logicalShift - shift x to the right by n, using a logical shift
@@ -169,7 +169,8 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  return 2;
+  return (x >> n) & ~(((1 << 31) >> n) << 1);
+  // return (int)((unsigned int) x>> n);
 }
 /*
  * bitCount - returns count of number of 1's in word
@@ -179,8 +180,7 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  /*use the half to check  
-  */
+  return 2;
 }
 /* 
  * bang - Compute !x without using !
@@ -190,15 +190,14 @@ int bitCount(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  /*use the half to check
-  */
+  //use half of word
   x |= x >> 16;
   x |= x >> 8;
   x |= x >> 4;
   x |= x >> 2;
   x |= x >> 1;
-  return (x&1)^1;
-
+  return (x & 1) ^ 1; 
+  //return 2;
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -207,6 +206,9 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
+  /*
+  leftshift wordlength - 1
+  */
   return 1<<31;
 }
 /* 
@@ -240,7 +242,7 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
-  return ~x+1;
+  return (~x) + 1;
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -250,7 +252,7 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  return 2;
+  return !(!x | (x >> 31));
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -264,51 +266,51 @@ int isLessOrEqual(int x, int y) {
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
-     that you are allowed to use for your implementation of the function. 
-     The max operator count is checked by dlc. Note that '=' is not 
-     counted; you may use as many of these as you want without penalty.
-  3. Use the btest test harness to check your functions for correctness.
-  4. Use the BDD checker to formally verify your functions
-  5. The maximum number of ops for each function is given in the
-     header comment for each function. If there are any inconsistencies 
-     between the maximum ops in the writeup and in this file, consider
-     this file the authoritative source.
-
-/*
- * STEP 2: Modify the following functions according the coding rules.
- * 
- *   IMPORTANT. TO AVOID GRADING SURPRISES:
- *   1. Use the dlc compiler to check that your solutions conform
- *      to the coding rules.
- *   2. Use the BDD checker to formally verify that your solutions produce 
- *      the correct answers.
+ *   Example: ilog2(16) = 4
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 90
+ *   Rating: 4
  */
-
-
-#endif
-/* 
- * bitAnd - x&y using only ~ and | 
- *   Example: bitAnd(6, 5) = 4
- *   Legal ops: ~ |
- *   Max ops: 8
- *   Rating: 1
- */
-int bitAnd(int x, int y) {
-  return ~(~x|~y);
+int ilog2(int x) {
+  return 2;
 }
 /* 
- * getByte - Extract byte n from word x
- *   Bytes numbered from 0 (LSB) to 3 (MSB)
- *   Examples: getByte(0x12345678,1) = 0x56
- *   Legal ops: ! ~ & ^ | + << >>
- *   Max ops: 6
+ * float_neg - Return bit-level equivalent of expression -f for
+ *   floating point argument f.
+ *   Both the argument and result are passed as unsigned int's, but
+ *   they are to be interpreted as the bit-level representations of
+ *   single-precision floating point values.
+ *   When argument is NaN, return argument.
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 10
  *   Rating: 2
  */
-int getByte(int x, int n) {
-  int res = 0xFF;
-  n  = 1<<n;
-  res = x&(n<<res); 	
-  res = res>>n;
-  return res;
+unsigned float_neg(unsigned uf) {
+ return 2;
 }
 /* 
+ * float_i2f - Return bit-level equivalent of expression (float) x
+ *   Result is returned as unsigned int, but
+ *   it is to be interpreted as the bit-level representation of a
+ *   single-precision floating point values.
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 30
+ *   Rating: 4
+ */
+unsigned float_i2f(int x) {
+  return 2;
+}
+/* 
+ * float_twice - Return bit-level equivalent of expression 2*f for
+ *   floating point argument f.
+ *   Both the argument and result are passed as unsigned int's, but
+ *   they are to be interpreted as the bit-level representation of
+ *   single-precision floating point values.
+ *   When argument is NaN, return argument
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 30
+ *   Rating: 4
+ */
+unsigned float_twice(unsigned uf) {
+  return 2;
+}
