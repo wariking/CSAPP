@@ -180,7 +180,17 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return 2;
+  x = x - (x>>1)&0x55555555;
+  x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+  x = (x + (x >> 4)) & 0x0F0F0F0F;
+  x = x + (x >> 8);
+  x = x + (x >> 16);
+  return x & 0x0000003F;
+
+  //Hacker's Delight 
+  //http://books.google.com/books?id=iBNKMspIlqEC&pg=PA66#v=onepage&q&f=false
+  //http://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
+  //return 2;
 }
 /* 
  * bang - Compute !x without using !
@@ -221,7 +231,12 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+  
+
+
+
+
+  //return 2;
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
