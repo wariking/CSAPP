@@ -231,11 +231,11 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  
-
-
-
-
+  // negative is (~n + 1),whether that's a bug, i.e. x = -1;
+  // ~((1<<31)>>shift)
+  int shift;
+  shift = 33 + ~n;
+  return !(x ^ ((x << shift) >> shift));
   //return 2;
 }
 /* 
@@ -247,7 +247,11 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    return 2;
+    
+  
+
+
+  //return 2;
 }
 /* 
  * negate - return -x 
