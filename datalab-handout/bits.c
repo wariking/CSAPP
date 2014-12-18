@@ -131,6 +131,12 @@ NOTES:
 
 
 #endif
+/*http://brandontoner.com/files/school/CSCI_247/bits.c
+ * this doc helps a lot to finish this assignment
+ *
+ */
+
+
 /* 
  * bitAnd - x&y using only ~ and | 
  *   Example: bitAnd(6, 5) = 4
@@ -231,8 +237,10 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  // negative is (~n + 1),whether that's a bug, i.e. x = -1;
+  // negative or minus is (~n + 1),whether that's a bug, i.e. x = -1;
+  //http://stackoverflow.com/questions/14792521/bitwise-operations-and-shifts
   // ~((1<<31)>>shift)
+
   int shift;
   shift = 33 + ~n;
   return !(x ^ ((x << shift) >> shift));
@@ -247,8 +255,10 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    
-  
+  //http://stackoverflow.com/questions/5061093/dividing-by-power-of-2-using-bit-shifting
+  // handle rounding by generating bias  
+  // if negative just shift n, will get divpwr2(-33,4) = -3;
+  return (x + ((1 << n) + ~0) & (x >> 31));
 
 
   //return 2;
@@ -281,7 +291,14 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+  //the key to solve this is how to handle overflow
+  int  x_hb, y_hb, res, xy_com;
+  x_hb = x >> 31;
+  y_hb = y >> 31;
+  res = y + (~x) + 1;
+  xy_com = x_hb ^ y_hb;
+  return !((xy_com | (res >> 31)) & !(xy_com & x_hb));
+  //return 2;
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -291,7 +308,8 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return 2;
+  
+  //return 2;
 }
 /* 
  * float_neg - Return bit-level equivalent of expression -f for
