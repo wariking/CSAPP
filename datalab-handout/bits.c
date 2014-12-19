@@ -308,7 +308,20 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  
+  //get the minimum largest power of 2, then count the bit
+  //get the number
+  x |= (x >> 1);
+  x |= (x >> 2);
+  x |= (x >> 4);
+  x |= (x >> 8);
+  x |= (x >> 16);
+  // bitcount,get the count
+  x = x - (x>>1)&0x55555555;
+  x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+  x = (x + (x >> 4)) & 0x0F0F0F0F;
+  x = x + (x >> 8);
+  x = x + (x >> 16);
+  return x & 0x0000003F;
   //return 2;
 }
 /* 
@@ -323,7 +336,12 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+  //exponent will be all 1, if uf is Nan or Inf;
+  if ((uf << 1) >> 23) + 1 == 0//(uf << 1)>> 23 == ~0
+    return uf;
+  else return uf ^ (1 << 31);  
+
+  //return 2;
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -335,7 +353,8 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+  
+  //return 2;
 }
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
