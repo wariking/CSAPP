@@ -337,7 +337,7 @@ int ilog2(int x) {
  */
 unsigned float_neg(unsigned uf) {
   //exponent will be all 1, if uf is Nan or Inf;
-  if ((uf << 1) >> 23) + 1 == 0//(uf << 1)>> 23 == ~0
+  if ((uf << 1) >> 24) + 1 == 0//(uf << 1)>> 23 == ~0
     return uf;
   else return uf ^ (1 << 31);  
 
@@ -368,5 +368,20 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+/*
+ *
+ *how to check the exponent is all 1 or zero
+ */ 
+ unsigned sign = ((uf >> 31) << 31);
+ unsigned exp = (uf >> 23) & 0xFF;
+ unsigned frac = uf & 0x7FFFFF;
+ if(exp == 0){
+   return (uf << 1) | sign; 
+ }else if(exp == 0xFF){
+   return uf;
+ }else{
+   exp++;
+ }
+ return (exp << 23) | sign | frac;
+//return 2;
 }
